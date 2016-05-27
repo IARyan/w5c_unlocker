@@ -18,29 +18,40 @@ class unlock_gui(Tkinter.Tk):
 
   def initialize(self):
     self.grid()
+    self.grid_rowconfigure(0, weight=1)
+    self.grid_columnconfigure(0, weight=1)
+    self.grid_rowconfigure(1, weight=1)
+    self.grid_columnconfigure(0, weight=1)
 
     gui_actions = Tkinter.LabelFrame(self, text="Unlocker Actions")
-    gui_actions.grid(row=0, column=0, columnspan=4, sticky='NSEW', padx=5, pady=5, ipadx=5, ipady=5)
+    gui_actions.grid(row=0, column=0, padx=5, pady=5)
 
-    unlock_button = Tkinter.Button(gui_actions,text=u"Unlock Bootloader", command = utils.fastboot)
-    unlock_button.grid(row=1, column=0, columnspan=2, sticky='W')
+    # Create Unlock button
+    Tkinter.Button(gui_actions, text=u"Unlock Bootloader", width=20, height=2, command = utils.fastboot).grid(row=0, column=0, padx=10, pady=10)
 
-    lock_button = Tkinter.Button(gui_actions,text=u"Lock Bootloader", command = utils.fastboot)
-    lock_button.grid(row=1, column=2, columnspan=2, sticky='W')
+    # Create Lock button
+    Tkinter.Button(gui_actions, text=u"Lock Bootloader", width=20, height=2, command = utils.fastboot).grid(row=0, column=1, padx=10, pady=10)
 
-    unlock_button = Tkinter.Button(gui_actions,text=u"Fastboot Mode", command = utils.fastboot )
-    unlock_button.grid(row=2, column=0, columnspan=2, sticky='W')
+    # Create Fastboot button
+    Tkinter.Button(gui_actions, text=u"Fastboot Mode", width=20, height=2, command = utils.fastboot).grid(row=1, column=0, padx=10, pady=10)
 
-    unlock_button = Tkinter.Button(gui_actions,text=u"Download Mode", command = utils.fastboot)
-    unlock_button.grid(row=2, column=2, columnspan=2, sticky='W')
+    # Create Download button
+    Tkinter.Button(gui_actions, text=u"Download Mode", width=20, height=2, command = utils.fastboot).grid(row=1, column=1, padx=10, pady=10)
+
+    # Create Root button
+    Tkinter.Button(gui_actions, text=u"Root Device", width=20, height=2, command = utils.fastboot).grid(row=2, column=0, padx=10, pady=10)
+
+    # Create UnRoot button
+    Tkinter.Button(gui_actions, text=u"Un-Root Device", width=20, height=2, command = utils.fastboot).grid(row=2, column=1, padx=10, pady=10)
 
 
     output_frame = Tkinter.LabelFrame(self, text="Unlocker Output")
-    output_frame.grid(row=3, column=0, columnspan=4, sticky='W', padx=5, pady=5, ipadx=5, ipady=5)
+    output_frame.grid(row=1, column=0, padx=5, pady=5, ipadx=5, ipady=5)
 
 
     output_window = Tkinter.Text(output_frame)
-    output_window.grid(row=4, column=0, columnspan=4)
+    print output_window.winfo_width() 
+    output_window.grid(row=0, column=0)
 
 
 def main():
