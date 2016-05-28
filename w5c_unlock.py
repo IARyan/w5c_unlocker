@@ -77,8 +77,26 @@ class unlock_gui(tk.Tk):
    # Actions label frame
     tool_status = tk.LabelFrame(self, text="Dependency Status")
     tool_status.grid(row=0, column=1, padx=5, pady=5, sticky="NSEW")
+
     # Create Unlock button
-    tk.Button(tool_status, text=u"Unlock Bootloader", width=20, height=2, command = utils.fastboot).grid(row=0, column=0, sticky="NSEW", padx=10, pady=10)
+    tk.Label(tool_status, text="Adb:").grid(row=0, column=0, sticky="E")
+    adb_status = tk.Frame(tool_status, bg="red")
+    tool_status.grid_rowconfigure(0, weight=1)
+    tool_status.grid_columnconfigure(1, weight=1)
+    adb_status.grid(row=0, column=1, sticky="NSEW", padx=5, pady=10)
+
+    tk.Label(tool_status, text="Fastboot:").grid(row=1, column=0, sticky="E")
+    adb_status = tk.Frame(tool_status, bg="red")
+    tool_status.grid_rowconfigure(1, weight=1)
+    tool_status.grid_columnconfigure(1, weight=1)
+    adb_status.grid(row=1, column=1, sticky="NSEW", padx=5, pady=10)
+
+    tk.Label(tool_status, text="Files:").grid(row=2, column=0, sticky="E")
+    adb_status = tk.Frame(tool_status, bg="red")
+    tool_status.grid_rowconfigure(2, weight=1)
+    tool_status.grid_columnconfigure(1, weight=1)
+    adb_status.grid(row=2, column=1, sticky="NSEW", padx=5, pady=10)
+    #tk.Button(tool_status, text=u"Unlock Bootloader", width=20, height=2, command = utils.fastboot).grid(row=0, column=0, sticky="NSEW", padx=10, pady=10)
 
   def output(self):
     output_frame = tk.LabelFrame(self, text="Unlocker Output")
@@ -100,20 +118,24 @@ def main():
     parser.add_argument('-l', '--lock',action='store_true', default=False, dest="lock_bootloader", help="Lock Optimus Exceed 2 bootloader")
     parser.add_argument('-f', '--fastboot-mode', action='store_true', default=False, dest="fastboot_mode", help="Set Optimus Exceed 2 to fastboot mode")
     parser.add_argument('-d', '--download-mode', action='store_true', default=False, dest="download_mode", help="Set Optimus Exceed 2 to download mode")
-    parser.add_argument('-s', '--sdk', action='store', dest="sdk_path", help="Path to Android SDK (optional)")
+    parser.add_argument('-r', '--root', action='store_true', default=False, dest="root_device", help="Root Optimus Exceed 2")
+    parser.add_argument('-x', '--unroot', action='store_true', default=False, dest="unroot_device", help="Un-Root Optimus Exceed 2")
 
     # Parse the command line arguments.
     args = parser.parse_args()
 
     # Handle command line arguments if provided else start the GUI
     if args.unlock_bootloader:
-      utils.check_dependencies(args.sdk_path, gui=False)
-      #unlock_bootloader(, )
+      unlock_bootloader( )
     elif args.lock_bootloader:
       utils.lock_bootloader()
     elif args.fastboot_mode:
       utils.fastboot_mode()
     elif args.download_mode:
+      utils.download_mode()
+    elif args.root_device:
+      utils.download_mode()
+    elif args.unroot_device:
       utils.download_mode()
     else:
       app = unlock_gui(None)
