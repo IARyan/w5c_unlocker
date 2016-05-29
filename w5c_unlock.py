@@ -7,6 +7,8 @@ import argparse
 import utils
 import gui_utils
 import Tkinter as tk
+import ttk
+import tkMessageBox
 
 class unlock_gui(tk.Tk):
   """
@@ -24,6 +26,7 @@ class unlock_gui(tk.Tk):
     self.actions()
     self.status()
     self.output()
+    self.check_tools()
 
   def actions(self):
     """
@@ -34,7 +37,7 @@ class unlock_gui(tk.Tk):
     self.grid_columnconfigure(0, weight=1)
   
     # Actions label frame
-    gui_actions = tk.LabelFrame(self, text="Unlocker Actions")
+    gui_actions = ttk.LabelFrame(self, text="Unlocker Actions")
     gui_actions.grid(row=0, column=0, padx=5, pady=5, sticky="NSEW")
 
     # Allow grid auto resize 
@@ -72,7 +75,7 @@ class unlock_gui(tk.Tk):
 
   def status(self):
     # Actions label frame
-    tool_status = tk.LabelFrame(self, text="Dependencies Status")
+    tool_status = ttk.LabelFrame(self, text="Dependencies Status")
     tool_status.grid(row=0, column=1, padx=5, pady=5, sticky="NSEW")
 
     # Allow grid auto resize 
@@ -84,20 +87,20 @@ class unlock_gui(tk.Tk):
     tool_status.grid_columnconfigure(1, weight=1)
 
     # Create Unlock button
-    tk.Label(tool_status, text="Adb:").grid(row=0, column=0, sticky="E")
+    ttk.Label(tool_status, text="Adb:").grid(row=0, column=0, sticky="E")
     self.adb_status = tk.Frame(tool_status, bg="#EE0000")
-
+    self.adb_status.confirmed = False
     self.adb_status.grid(row=0, column=1, sticky="NSEW", padx=5, pady=10)
     
-    tk.Label(tool_status, text="Fastboot:").grid(row=1, column=0, sticky="E")
+    ttk.Label(tool_status, text="Fastboot:").grid(row=1, column=0, sticky="E")
     self.fastboot_status = tk.Frame(tool_status, bg="#EE0000")
-
     self.fastboot_status.grid(row=1, column=1, sticky="NSEW", padx=5, pady=10)
+    self.fastboot_status.confirmed = False
 
-    tk.Label(tool_status, text="Install Files:").grid(row=2, column=0, sticky="E")
+    ttk.Label(tool_status, text="Install Files:").grid(row=2, column=0, sticky="E")
     self.file_status = tk.Frame(tool_status, bg="#EE0000")
-  
     self.file_status.grid(row=2, column=1, sticky="NSEW", padx=5, pady=10)
+    self.file_status.confirmed = False
     self.file_status.configure(background="#009900")
 
   def output(self):
@@ -106,15 +109,22 @@ class unlock_gui(tk.Tk):
     self.grid_columnconfigure(0, weight=1)
 
     # Output label frame
-    output_frame = tk.LabelFrame(self, text="Unlocker Output")
+    output_frame = ttk.LabelFrame(self, text="Unlocker Output")
     output_frame.grid(row=1, column=0, columnspan=2, padx=5, pady=5, ipadx=8, ipady=8, sticky="NSEW")
 
-
+    # Create output window
     self.output_window = gui_utils.ScrolledTextReadOnly(output_frame, height=10)
-    self.output_window .insert(tk.INSERT, "A" * 1000 + "\n")
+    self.output_window.insert(tk.INSERT, "A" * 1000 + "\n")
     output_frame.grid_rowconfigure(0, weight=1)
     output_frame.grid_columnconfigure(0, weight=1)
-    self.output_window .grid(row=0, column=0)
+    self.output_window.grid(row=0, column=0)
+
+  def check_tools(self):
+    """
+    Checks that dependencies are installed
+    """
+    #self.adb_status, self.fastboot_status, self.file_status = utils.check_dependencies()
+    var = tkMessageBox.askokcancel("Download Dependencies", "Dependency tools and files not found. Download them now?")
 
 def main():
   try:
